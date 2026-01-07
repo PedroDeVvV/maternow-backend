@@ -1,6 +1,7 @@
 package maternow.domain.user;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
+@EqualsAndHashCode(of = "id")
 public class User implements UserDetails {
 
     @Id
@@ -25,7 +27,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    protected User() {}
+    protected User() {
+    }
 
     public User(String name, String email, String password) {
         this.name = name;
@@ -38,6 +41,10 @@ public class User implements UserDetails {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
+    public Long getId() { return id;}
+
+    public String getName() { return name;}
+
     @Override
     public String getUsername() {
         return email;
@@ -48,8 +55,23 @@ public class User implements UserDetails {
         return password;
     }
 
-    @Override public boolean isAccountNonExpired() { return true; }
-    @Override public boolean isAccountNonLocked() { return true; }
-    @Override public boolean isCredentialsNonExpired() { return true; }
-    @Override public boolean isEnabled() { return true; }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
