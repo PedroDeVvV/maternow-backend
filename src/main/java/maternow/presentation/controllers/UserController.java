@@ -3,7 +3,9 @@ package maternow.presentation.controllers;
 import jakarta.validation.Valid;
 import maternow.domain.repository.UserRepository;
 import maternow.domain.user.User;
+import maternow.infra.security.services.TokenService;
 import maternow.presentation.dto.AuthenticatorDTO;
+import maternow.presentation.dto.LoginTokenDTO;
 import maternow.presentation.dto.RegisterDto;
 import maternow.presentation.dto.UserSummary;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class UserController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
+    TokenService tokenService;
+
+    @Autowired
     private UserRepository repository;
 
     @PostMapping("/login")
@@ -31,7 +36,9 @@ public class UserController {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        return ResponseEntity.ok().build();
+        var token = tokenService.generateToken((User) auth.getPrincipal());
+
+        return ResponseEntity.ok(new LoginTokenDTO(token));
     }
 
     @PostMapping("/register")
