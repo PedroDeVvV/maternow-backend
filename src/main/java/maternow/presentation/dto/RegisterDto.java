@@ -10,6 +10,7 @@ public record RegisterDto(
         @NotBlank(message = "The e-mail is required.")
         String email,
         @NotBlank(message = "The password is required.")
-        String password
+        String password,
+        String phone
 ) {
 }

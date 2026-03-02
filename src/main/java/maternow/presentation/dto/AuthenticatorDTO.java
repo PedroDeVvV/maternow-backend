@@ -1,4 +1,4 @@
 package maternow.presentation.dto;
 
-public record AuthenticatorDTO(String email, String password) {
+public record AuthenticatorDTO(String login, String password) {
 }
